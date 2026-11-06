@@ -107,11 +107,6 @@ p{margin:0}
   .rail .seg{display:none}
   .cols,.sub{grid-template-columns:minmax(0,1fr)}
 }
-/* marcas de revisión */
-.fix{background:var(--fixbg);color:var(--fix);font:500 .68rem/1 var(--mono);padding:3px 5px;border-radius:3px;vertical-align:1px;margin-left:3px;white-space:nowrap}
-.notes{border:1px dashed var(--fix);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
-.notes ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
-.notes .eyebrow{color:var(--fix)}
 .out-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .out-row .pill{border:1.5px solid var(--urine);border-radius:999px;padding:6px 14px;font-weight:600}
 .langbar{max-width:980px;margin:0 auto 18px;display:flex;justify-content:flex-end}
@@ -119,6 +114,32 @@ p{margin:0}
 .lang a{font:500 .78rem/1 var(--mono);letter-spacing:.08em;padding:8px 14px;color:var(--muted);text-decoration:none}
 .lang a[aria-current="true"]{background:var(--filtrate);color:var(--surface)}
 .lang a:focus-visible{outline:2px solid var(--hormone);outline-offset:-2px}
+/* secciones de funciones y evaluación */
+.band.fn{border-top:5px solid var(--hormone)}
+.band.eval{border-top:5px solid var(--filtrate)}
+.fn .tag{background:var(--hormone)} .eval .tag{background:var(--filtrate)}
+.tree{display:flex;flex-direction:column;align-items:stretch}
+.root{align-self:center;font-family:var(--display);font-weight:800;font-size:1.05rem;padding:8px 18px;border-radius:999px;background:var(--fg);color:var(--surface);position:relative}
+.root::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:18px;background:var(--line);transform:translateX(-1px)}
+.kids{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px;padding-top:16px;border-top:2px solid var(--line)}
+.kids.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kids.inner{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.kid{background:var(--chip);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.kids:not(.inner)>.kid::before{content:"";position:absolute;left:50%;top:-18px;width:2px;height:16px;background:var(--line)}
+.kid.hl{outline:2px solid var(--hormone);outline-offset:-2px}
+.kid .kid{background:var(--surface)}
+.kid b{font-family:var(--display);font-size:1rem}
+.kid small{color:var(--muted);font-size:.9rem;line-height:1.45}
+.chain.v{flex-direction:column;align-items:stretch;gap:6px}
+.chain.v li{flex-direction:column;align-items:stretch}
+.chain.v li:not(:last-child)::after{content:"↓";text-align:center;padding:0}
+.chain.v .node{border-radius:8px;font-weight:400;font-size:.9rem;border-color:var(--filtrate)}
+.checks{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:.9rem}
+.checks li::before{content:"✓ ";color:var(--filtrate);font-weight:700}
+.warn{border-left:3px solid var(--urine);padding:8px 10px;background:var(--surface);border-radius:0 8px 8px 0;font-size:.9rem;font-weight:600}
+.formula{font:500 1.25rem var(--mono);text-align:center;padding:10px;border-radius:8px;background:var(--surface);color:var(--filtrate);margin:4px 0}
+.mini{font-size:.9rem;color:var(--muted)}
+@media (max-width:760px){.kids,.kids.two{grid-template-columns:minmax(0,1fr)}.kids:not(.inner)>.kid::before{display:none}}
 </style>
 </head>
 <body>
@@ -279,10 +300,115 @@ p{margin:0}
     </div>
   </section>
 
+  <!-- FUNCIONES DEL RIÑÓN -->
+  <section class="band fn" aria-labelledby="h-fn-es">
+    <div class="band-head"><span class="tag">Funciones</span><h2 id="h-fn-es">Riñón y homeostasis</h2></div>
+    <div class="tree">
+      <div class="root">Riñón</div>
+      <div class="kids">
+        <div class="kid"><b>Manejo y depuración del contenido hídrico</b><small>El túbulo renal mantiene los electrolitos y el agua.</small></div>
+        <div class="kid"><b>Equilibrio ácido-base</b><small>A cargo del túbulo renal.</small></div>
+        <div class="kid hl"><b>Función endocrina</b><small>Homeostasis hormonal en dos vías:</small>
+          <div class="kids inner">
+            <div class="kid"><span class="eyebrow">Produce</span><small>Hormonas de acción endocrina y paracrina: vitamina D activa, eritropoyetina y renina.</small></div>
+            <div class="kid"><span class="eyebrow">Degrada</span><small>Otras hormonas, como la insulina y la hormona paratiroidea.</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVALUACIÓN -->
+  <section class="band eval" aria-labelledby="h-ev-es">
+    <div class="band-head"><span class="tag">Evaluación</span><h2 id="h-ev-es">¿Cómo se valora la función renal?</h2></div>
+    <div class="tree">
+      <div class="root">Función renal</div>
+      <div class="kids two">
+        <div class="kid"><b>Glomerular</b>
+          <ol class="chain v">
+            <li><span class="node">Filtrado glomerular (FGR): ultrafiltrado del plasma libre de proteínas producido por unidad de tiempo. Es el indicador más utilizado.</span></li>
+            <li><span class="node">Albuminuria: albúmina en orina en un tiempo determinado. Marca alteración de la permeabilidad de la barrera hemato-urinaria (membrana basal glomerular).</span></li>
+          </ol>
+          <small>Las guías KDIGO consideran ambos fundamentales para definir la ERC.</small>
+        </div>
+        <div class="kid"><b>Tubular</b>
+          <ol class="chain v">
+            <li><span class="node">Reabsorción y excreción de componentes urinarios.</span></li>
+            <li><span class="node">Concentración y acidificación: estudios analíticos y pruebas funcionales tras estímulo (prueba de furosemida).</span></li>
+          </ol>
+          <small>El daño tubular puede preceder a la caída del FGR, y una tubulopatía puede existir sin lesión glomerular.</small>
+        </div>
+      </div>
+    </div>
+    <p class="mini">El filtrado empieza donde el sistema circulatorio (endotelio capilar) contacta con el excretor (epitelio de la cápsula de Bowman), en el glomérulo.</p>
+  </section>
+
+  <!-- MEDICIÓN DEL FGR -->
+  <section class="band eval" aria-labelledby="h-me-es">
+    <div class="band-head"><span class="tag">FGR</span><h2 id="h-me-es">Medición del filtrado glomerular</h2></div>
+    <div class="tree">
+      <div class="root">FGR</div>
+      <div class="kids two">
+        <div class="kid"><b>Medido: aclaramiento renal</b>
+          <small>Volumen de plasma que queda libre de una sustancia tras su paso por el riñón. Equivale al FGR si la sustancia:</small>
+          <ul class="checks">
+            <li>tiene concentración estable en plasma</li>
+            <li>no se une a proteínas plasmáticas</li>
+            <li>se filtra libremente en el glomérulo</li>
+            <li>no se reabsorbe ni se secreta en el túbulo</li>
+          </ul>
+          <div class="kids inner">
+            <div class="kid"><span class="eyebrow">Exógena</span><small>Inulina, iotalamato.</small></div>
+            <div class="kid"><span class="eyebrow">Endógena</span><small>Creatinina, producida por el propio organismo.</small></div>
+          </div>
+        </div>
+        <div class="kid"><b>Estimado: fórmulas</b>
+          <small>Calculado a partir de biomarcadores en sangre: urea, creatinina y cistatina C. Fácil de usar en la práctica clínica.</small>
+          <p class="warn">No inferir el FGR directamente del valor del biomarcador: siempre calcularlo con la fórmula.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACLARAMIENTO DE CREATININA -->
+  <section class="band eval" aria-labelledby="h-cr-es">
+    <div class="band-head"><span class="tag">Creatinina</span><h2 id="h-cr-es">Aclaramiento de creatinina</h2></div>
+    <ol class="chain">
+      <li><span class="node">Creatina muscular</span></li>
+      <li><span class="node">Creatinina (proporcional a la masa muscular)</span></li>
+      <li><span class="node">Filtración glomerular + secreción en túbulo proximal</span></li>
+      <li><span class="node end">Orina</span></li>
+    </ol>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">Cómo se mide</span>
+        <ul>
+          <li>Recolección de orina en un tiempo fijo, por lo general 24 h.</li>
+          <li>Creatinina en suero y en orina, en las mismas unidades.</li>
+          <li>Resultado normalizado a 1,73 m² de superficie corporal.</li>
+        </ul>
+        <p class="formula">Ccr = (U × V) / S</p>
+        <small>U: creatinina en orina · V: volumen urinario (ml/min) · S: creatinina sérica · resultado en ml/min/1,73 m²</small>
+      </div>
+      <div class="box"><span class="eyebrow">Límites y uso</span>
+        <ul>
+          <li>Barato y sencillo, pero no es un marcador ideal.</li>
+          <li>La secreción tubular de creatinina, que aumenta conforme cae el FGR, limita su exactitud.</li>
+          <li>La recolección de orina suele ser incorrecta.</li>
+          <li>Hoy las fórmulas de estimación rinden mejor y se prefieren.</li>
+          <li>Útil cuando la producción de creatinina es atípica: gran masa muscular, desnutrición o sarcopenia.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <footer style="font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px">
     <span class="eyebrow">Referencias</span>
     <p>1. Carracedo J, Ramírez R. Fisiología Renal. En: Lorenzo V, López Gómez JM (Eds). Nefrología al día [Internet]. ISSN: 2659-2606. 2020 [citado 2026 nov 6]. Disponible en: <a href="https://nefrologiaaldia.org/articulo/fisiologia-renal/" style="color:var(--filtrate);overflow-wrap:anywhere">https://nefrologiaaldia.org/articulo/fisiologia-renal/</a></p>
     <p>2. Ogobuiro I, Tuma F. Physiology, Renal. [Updated 2023 Jul 24]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2023 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK538339/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK538339/</a></p>
+    <p>3. Ortega López P, González Rodríguez JD, García Nieto V. Pruebas de función renal. Glomerular y tubular. En: Lorenzo V, López Gómez JM (Eds). Nefrología al día [Internet]. ISSN: 2659-2606. 2024 [citado 2026 nov 6]. Disponible en: <a href="https://nefrologiaaldia.org/articulo/pruebas-de-funcion-renal-glomerular-y-tubular/" style="color:var(--filtrate);overflow-wrap:anywhere">https://nefrologiaaldia.org/articulo/pruebas-de-funcion-renal-glomerular-y-tubular/</a></p>
+    <p>4. Gounden V, Bhatt H, Jialal I. Renal Function Tests. [Updated 2024 Jul 27]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK507821/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK507821/</a></p>
+    <p>5. Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117–S314. Disponible en: <a href="https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf" style="color:var(--filtrate);overflow-wrap:anywhere">https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf</a></p>
+    <p>6. Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. KDIGO 2026 Clinical Practice Guideline for the Management of Anemia in Chronic Kidney Disease (CKD). Kidney Int. 2026;109(1S):S1–S99. Disponible en: <a href="https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext</a></p>
   </footer>
 </div>
 <div class="wrap" lang="en" id="v-en" hidden>
@@ -429,10 +555,115 @@ p{margin:0}
     </div>
   </section>
 
+  <!-- KIDNEY FUNCTIONS -->
+  <section class="band fn" aria-labelledby="h-fn-en">
+    <div class="band-head"><span class="tag">Functions</span><h2 id="h-fn-en">Kidney and homeostasis</h2></div>
+    <div class="tree">
+      <div class="root">Kidney</div>
+      <div class="kids">
+        <div class="kid"><b>Handling and clearance of body water</b><small>The renal tubule maintains electrolytes and water.</small></div>
+        <div class="kid"><b>Acid–base balance</b><small>Carried out by the renal tubule.</small></div>
+        <div class="kid hl"><b>Endocrine function</b><small>Hormonal homeostasis through two pathways:</small>
+          <div class="kids inner">
+            <div class="kid"><span class="eyebrow">Produces</span><small>Hormones with endocrine and paracrine action: active vitamin D, erythropoietin and renin.</small></div>
+            <div class="kid"><span class="eyebrow">Degrades</span><small>Other hormones, such as insulin and parathyroid hormone.</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASSESSMENT -->
+  <section class="band eval" aria-labelledby="h-ev-en">
+    <div class="band-head"><span class="tag">Assessment</span><h2 id="h-ev-en">How is kidney function assessed?</h2></div>
+    <div class="tree">
+      <div class="root">Kidney function</div>
+      <div class="kids two">
+        <div class="kid"><b>Glomerular</b>
+          <ol class="chain v">
+            <li><span class="node">Glomerular filtration rate (GFR): protein-free plasma ultrafiltrate produced per unit of time. It is the most widely used indicator.</span></li>
+            <li><span class="node">Albuminuria: albumin in urine over a set period. It marks altered permeability of the blood–urine barrier (glomerular basement membrane).</span></li>
+          </ol>
+          <small>KDIGO guidelines consider both essential to define CKD.</small>
+        </div>
+        <div class="kid"><b>Tubular</b>
+          <ol class="chain v">
+            <li><span class="node">Reabsorption and excretion of urinary components.</span></li>
+            <li><span class="node">Concentration and acidification: laboratory studies and functional tests after a stimulus (furosemide test).</span></li>
+          </ol>
+          <small>Tubular damage can precede the fall in GFR, and a tubulopathy can exist without glomerular injury.</small>
+        </div>
+      </div>
+    </div>
+    <p class="mini">Filtration begins where the circulatory system (capillary endothelium) meets the excretory system (Bowman's capsule epithelium), in the glomerulus.</p>
+  </section>
+
+  <!-- GFR MEASUREMENT -->
+  <section class="band eval" aria-labelledby="h-me-en">
+    <div class="band-head"><span class="tag">GFR</span><h2 id="h-me-en">Measuring glomerular filtration</h2></div>
+    <div class="tree">
+      <div class="root">GFR</div>
+      <div class="kids two">
+        <div class="kid"><b>Measured: renal clearance</b>
+          <small>The volume of plasma cleared of a substance as it passes through the kidney. It equals GFR when the substance:</small>
+          <ul class="checks">
+            <li>has a stable plasma concentration</li>
+            <li>does not bind plasma proteins</li>
+            <li>is freely filtered at the glomerulus</li>
+            <li>is neither reabsorbed nor secreted by the tubule</li>
+          </ul>
+          <div class="kids inner">
+            <div class="kid"><span class="eyebrow">Exogenous</span><small>Inulin, iothalamate.</small></div>
+            <div class="kid"><span class="eyebrow">Endogenous</span><small>Creatinine, produced by the body itself.</small></div>
+          </div>
+        </div>
+        <div class="kid"><b>Estimated: equations</b>
+          <small>Calculated from blood biomarkers: urea, creatinine and cystatin C. Easy to use in routine clinical practice.</small>
+          <p class="warn">Do not infer GFR directly from the biomarker value: always calculate it with the equation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREATININE CLEARANCE -->
+  <section class="band eval" aria-labelledby="h-cr-en">
+    <div class="band-head"><span class="tag">Creatinine</span><h2 id="h-cr-en">Creatinine clearance</h2></div>
+    <ol class="chain">
+      <li><span class="node">Muscle creatine</span></li>
+      <li><span class="node">Creatinine (proportional to muscle mass)</span></li>
+      <li><span class="node">Glomerular filtration + proximal tubular secretion</span></li>
+      <li><span class="node end">Urine</span></li>
+    </ol>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">How it is measured</span>
+        <ul>
+          <li>Urine collected over a fixed period, usually 24 h.</li>
+          <li>Creatinine in serum and urine, in the same units.</li>
+          <li>Result normalized to 1.73 m² body surface area.</li>
+        </ul>
+        <p class="formula">CrCl = (U × V) / S</p>
+        <small>U: urine creatinine · V: urine flow (mL/min) · S: serum creatinine · result in mL/min/1.73 m²</small>
+      </div>
+      <div class="box"><span class="eyebrow">Limits and use</span>
+        <ul>
+          <li>Cheap and simple, but not an ideal marker.</li>
+          <li>Tubular creatinine secretion, which rises as GFR falls, limits its accuracy.</li>
+          <li>Urine collection is often incorrect.</li>
+          <li>Estimating equations now perform better and are preferred.</li>
+          <li>Useful when creatinine generation is atypical: large muscle mass, malnutrition or sarcopenia.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <footer style="font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px">
     <span class="eyebrow">References</span>
     <p>1. Carracedo J, Ramírez R. Fisiología Renal. En: Lorenzo V, López Gómez JM (Eds). Nefrología al día [Internet]. ISSN: 2659-2606. 2020 [cited 2026 Nov 6]. Available from: <a href="https://nefrologiaaldia.org/articulo/fisiologia-renal/" style="color:var(--filtrate);overflow-wrap:anywhere">https://nefrologiaaldia.org/articulo/fisiologia-renal/</a></p>
     <p>2. Ogobuiro I, Tuma F. Physiology, Renal. [Updated 2023 Jul 24]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2023 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK538339/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK538339/</a></p>
+    <p>3. Ortega López P, González Rodríguez JD, García Nieto V. Pruebas de función renal. Glomerular y tubular. En: Lorenzo V, López Gómez JM (Eds). Nefrología al día [Internet]. ISSN: 2659-2606. 2024 [cited 2026 Nov 6]. Available from: <a href="https://nefrologiaaldia.org/articulo/pruebas-de-funcion-renal-glomerular-y-tubular/" style="color:var(--filtrate);overflow-wrap:anywhere">https://nefrologiaaldia.org/articulo/pruebas-de-funcion-renal-glomerular-y-tubular/</a></p>
+    <p>4. Gounden V, Bhatt H, Jialal I. Renal Function Tests. [Updated 2024 Jul 27]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK507821/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK507821/</a></p>
+    <p>5. Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117–S314. Available from: <a href="https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf" style="color:var(--filtrate);overflow-wrap:anywhere">https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf</a></p>
+    <p>6. Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. KDIGO 2026 Clinical Practice Guideline for the Management of Anemia in Chronic Kidney Disease (CKD). Kidney Int. 2026;109(1S):S1–S99. Available from: <a href="https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext</a></p>
   </footer>
 </div>
 

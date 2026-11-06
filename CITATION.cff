@@ -8,7 +8,7 @@ authors:
     orcid: "https://orcid.org/0000-0003-0644-801X"
     affiliation: "Unidad de Medicina Familiar No. 51, IMSS; Escuela de Medicina, UNITEC campus León"
 date-released: 2026-11-06
-version: "1.0.0"
+version: "1.1.0"
 repository-code: "https://github.com/ViiJX-stack/renal_function"
 references:
   - type: book-section
@@ -34,3 +34,50 @@ references:
       name: "StatPearls Publishing"
     year: 2023
     url: "https://www.ncbi.nlm.nih.gov/books/NBK538339/"
+  - type: book-section
+    title: "Pruebas de función renal. Glomerular y tubular"
+    authors:
+      - family-names: "Ortega López"
+        given-names: "Pedro"
+      - family-names: "González Rodríguez"
+        given-names: "Juan David"
+      - family-names: "García Nieto"
+        given-names: "Víctor"
+    collection-title: "Nefrología al día"
+    issn: "2659-2606"
+    year: 2024
+    url: "https://nefrologiaaldia.org/articulo/pruebas-de-funcion-renal-glomerular-y-tubular/"
+  - type: book-section
+    title: "Renal Function Tests"
+    authors:
+      - family-names: "Gounden"
+        given-names: "Verena"
+      - family-names: "Bhatt"
+        given-names: "Harshil"
+      - family-names: "Jialal"
+        given-names: "Ishwarlal"
+    collection-title: "StatPearls"
+    publisher:
+      name: "StatPearls Publishing"
+    year: 2024
+    url: "https://www.ncbi.nlm.nih.gov/books/NBK507821/"
+  - type: article
+    title: "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease"
+    authors:
+      - name: "Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group"
+    journal: "Kidney International"
+    year: 2024
+    volume: 105
+    issue: "4S"
+    start: "S117"
+    end: "S314"
+  - type: article
+    title: "KDIGO 2026 Clinical Practice Guideline for the Management of Anemia in Chronic Kidney Disease (CKD)"
+    authors:
+      - name: "Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group"
+    journal: "Kidney International"
+    year: 2026
+    volume: 109
+    issue: "1S"
+    start: "S1"
+    end: "S99"
