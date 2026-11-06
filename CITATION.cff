@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "Si usas este material, cítalo así."
+title: "Fisiología renal: diagrama anatomofuncional"
+type: software
+authors:
+  - family-names: "Godínez-Vázquez"
+    given-names: "Víctor Junior"
+    orcid: "https://orcid.org/0000-0003-0644-801X"
+    affiliation: "Unidad de Medicina Familiar No. 51, IMSS; Escuela de Medicina, UNITEC campus León"
+date-released: 2026-11-06
+version: "1.0.0"
+repository-code: "https://github.com/ViiJX-stack/fisiologia-renal"
+references:
+  - type: book-section
+    title: "Fisiología Renal"
+    authors:
+      - family-names: "Carracedo"
+        given-names: "Julia"
+      - family-names: "Ramírez"
+        given-names: "Rafael"
+    collection-title: "Nefrología al día"
+    issn: "2659-2606"
+    year: 2020
+    url: "https://nefrologiaaldia.org/articulo/fisiologia-renal/"
+  - type: book-section
+    title: "Physiology, Renal"
+    authors:
+      - family-names: "Ogobuiro"
+        given-names: "Ifeanyi"
+      - family-names: "Tuma"
+        given-names: "Faiz"
+    collection-title: "StatPearls"
+    publisher:
+      name: "StatPearls Publishing"
+    year: 2023
+    url: "https://www.ncbi.nlm.nih.gov/books/NBK538339/"

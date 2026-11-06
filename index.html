@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Función Renal Anatomofuncional</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: flujo vertical de un solo eje (sangre → nefrona → orina), cada segmento es una estación con su correlación anatomofuncional */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --fg:#17212b; --muted:#566370; --line:#cdd6dd;
+  --blood:#9b2423;      /* arterial */
+  --filtrate:#0f6e78;   /* filtrado / túbulo */
+  --urine:#a86d00;      /* orina */
+  --hormone:#4b4fa8;    /* regulación hormonal */
+  --fix:#7a5a00; --fixbg:#fff4d6;
+  --chip:#e8eef1;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f151b; --surface:#17202a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --blood:#e0605a; --filtrate:#4cc3cd; --urine:#e8b04a; --hormone:#9ea3f0;
+  --fix:#f0c860; --fixbg:#2e2714; --chip:#22303c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f151b; --surface:#17202a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --blood:#e0605a; --filtrate:#4cc3cd; --urine:#e8b04a; --hormone:#9ea3f0;
+  --fix:#f0c860; --fixbg:#2e2714; --chip:#22303c; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 56px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.35rem;font-weight:800}
+h3{font-size:1.12rem;font-weight:600}
+p{margin:0}
+.eyebrow{font:500 .72rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:65ch}
+
+/* bandas I/P/O */
+.band{border-radius:14px;background:var(--surface);border:1px solid var(--line);padding:22px;display:flex;flex-direction:column;gap:14px}
+.band.input{border-top:5px solid var(--blood)}
+.band.process{border-top:5px solid var(--filtrate)}
+.band.output{border-top:5px solid var(--urine)}
+.band-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tag{font:500 .72rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:4px;color:var(--surface)}
+.input .tag{background:var(--blood)} .process .tag{background:var(--filtrate)} .output .tag{background:var(--urine)}
+
+/* cadena vascular */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;padding:0;margin:0;list-style:none}
+.chain li{display:flex;align-items:center;gap:4px}
+.chain .node{border:1.5px solid var(--blood);color:var(--fg);border-radius:999px;padding:5px 12px;font-weight:600;font-size:.93rem;background:var(--surface)}
+.chain .node.end{background:var(--blood);color:var(--surface)}
+.chain li:not(:last-child)::after{content:"→";color:var(--blood);font-weight:700;padding-left:4px}
+
+/* 4 procesos */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:s;padding:0;margin:0;list-style:none}
+.steps li{background:var(--chip);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.steps b{font-family:var(--display);font-size:1rem}
+.steps .n{font:500 .75rem var(--mono);color:var(--filtrate)}
+.steps small{color:var(--muted);font-size:.86rem;line-height:1.4}
+@media (max-width:720px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* leyenda */
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.85rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.k{display:inline-block;font:500 .68rem/1 var(--mono);padding:4px 6px;border-radius:4px;letter-spacing:.06em}
+.k.F{background:var(--blood);color:var(--surface)}
+.k.R{background:var(--filtrate);color:var(--surface)}
+.k.S{background:var(--urine);color:var(--surface)}
+.k.H{background:var(--hormone);color:var(--surface)}
+
+/* nefrona: estaciones */
+.nephron{display:flex;flex-direction:column;gap:0;padding:0;margin:0;list-style:none}
+.station{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;position:relative}
+.rail{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--filtrate);box-shadow:0 0 0 4px var(--bg)}
+.station[data-segmento="glomerulo"] .dot{background:var(--blood)}
+.station[data-segmento="colector"] .dot{background:var(--urine)}
+.stem{flex:1;width:3px;background:linear-gradient(var(--filtrate),var(--filtrate));opacity:.45;margin-top:6px}
+.station:last-child .stem{background:var(--urine)}
+.rail .seg{font:500 .7rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center;margin-top:8px}
+.rail{order:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.procs{display:flex;gap:4px;flex-wrap:wrap}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.box{border-radius:8px;background:var(--chip);padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.box .eyebrow{font-size:.66rem}
+.box ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px;font-size:.93rem}
+.card > p, .card > ul{font-size:.95rem}
+.card > ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.hormone{border-left:3px solid var(--hormone);padding:8px 12px;background:var(--chip);border-radius:0 8px 8px 0;font-size:.92rem}
+.hormone b{color:var(--hormone)}
+.pct{font:500 .8rem var(--mono);color:var(--filtrate);white-space:nowrap}
+.mono{font-family:var(--mono);font-size:.86em}
+.sub{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sub .box h4{margin:0;font-family:var(--display);font-size:.98rem}
+.sub .box p{font-size:.9rem}
+@media (max-width:760px){
+  .station{grid-template-columns:34px minmax(0,1fr);gap:10px}
+  .rail .seg{display:none}
+  .cols,.sub{grid-template-columns:minmax(0,1fr)}
+}
+/* marcas de revisión */
+.fix{background:var(--fixbg);color:var(--fix);font:500 .68rem/1 var(--mono);padding:3px 5px;border-radius:3px;vertical-align:1px;margin-left:3px;white-space:nowrap}
+.notes{border:1px dashed var(--fix);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.notes ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.notes .eyebrow{color:var(--fix)}
+.out-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.out-row .pill{border:1.5px solid var(--urine);border-radius:999px;padding:6px 14px;font-weight:600}
+.langbar{max-width:980px;margin:0 auto 18px;display:flex;justify-content:flex-end}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.lang a{font:500 .78rem/1 var(--mono);letter-spacing:.08em;padding:8px 14px;color:var(--muted);text-decoration:none}
+.lang a[aria-current="true"]{background:var(--filtrate);color:var(--surface)}
+.lang a:focus-visible{outline:2px solid var(--hormone);outline-offset:-2px}
+</style>
+</head>
+<body>
+
+<nav class="langbar" aria-label="Idioma / Language"><div class="lang">
+  <a href="#es" id="l-es" lang="es">ES</a><a href="#en" id="l-en" lang="en">EN</a>
+</div></nav>
+<div class="wrap" lang="es" id="v-es">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <span class="eyebrow">Fisiología renal · relación anatomofuncional</span>
+    <h1>Función renal: de la arteria renal a la orina</h1>
+    <p class="lede">Modelo de entrada → proceso → salida. Cada estación de la nefrona muestra qué procesos ocurren ahí, con qué transportadores y bajo qué regulación hormonal. Es la base para ubicar después dónde falla el riñón en la patología.</p>
+  </header>
+
+  <!-- INPUT -->
+  <section class="band input" aria-labelledby="h-in">
+    <div class="band-head"><span class="tag">Input</span><h2 id="h-in">Sangre que ingresa al riñón</h2></div>
+    <p>La sangre entra por la arteria renal a través del hilio y se ramifica hasta terminar en los capilares glomerulares, donde se filtran grandes cantidades de líquido y solutos para comenzar la formación de orina.</p>
+    <ol class="chain">
+      <li><span class="node">Arteria renal (hilio)</span></li>
+      <li><span class="node">Arterias interlobares<sup class="fix">†1</sup></span></li>
+      <li><span class="node">Arterias arciformes</span></li>
+      <li><span class="node">Arterias interlobulillares</span></li>
+      <li><span class="node">Arteriola aferente</span></li>
+      <li><span class="node end">Capilares glomerulares</span></li>
+    </ol>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="band process" aria-labelledby="h-pr">
+    <div class="band-head"><span class="tag">Process</span><h2 id="h-pr">Cuatro procesos de la nefrona</h2></div>
+    <ol class="steps">
+      <li><span class="n">1</span><b>Filtración</b><small>Filtrado glomerular.</small></li>
+      <li><span class="n">2</span><b>Reabsorción tubular</b><small>Se reabsorben nutrientes orgánicos (aminoácidos, oligoelementos) y glucosa.</small></li>
+      <li><span class="n">3</span><b>Secreción tubular</b><small>Las toxinas son secretadas y no reabsorbidas.</small></li>
+      <li><span class="n">4</span><b>Excreción urinaria</b><small>Lo que permanece en la luz tubular sale como orina.</small></li>
+    </ol>
+    <div class="legend" aria-label="Clave de procesos">
+      <span><i class="k F">F</i> Filtración</span>
+      <span><i class="k R">R</i> Reabsorción</span>
+      <span><i class="k S">S</i> Secreción</span>
+      <span><i class="k H">H</i> Regulación hormonal</span>
+    </div>
+  </section>
+
+  <!-- NEFRONA -->
+  <section aria-labelledby="h-ne" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="eyebrow">Relación anatomofuncional</span>
+      <h2 id="h-ne">Recorrido por la nefrona</h2>
+    </div>
+
+    <ol class="nephron">
+      <!-- GLOMÉRULO -->
+      <li class="station" data-segmento="glomerulo">
+        <div class="rail"><span class="dot"></span><span class="seg">Corpúsculo renal</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Capilares glomerulares</h3><div class="procs"><i class="k F">F</i></div></div>
+          <p>Filtración de grandes cantidades de líquido y solutos hacia el espacio de Bowman: aquí empieza la formación de orina. El filtrado pasa al túbulo proximal.</p>
+        </article>
+      </li>
+
+      <!-- TP -->
+      <li class="station" data-segmento="tubulo-proximal">
+        <div class="rail"><span class="dot"></span><span class="seg">Túbulo proximal</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Túbulo proximal (TP)</h3><div class="procs"><i class="k R">R</i><i class="k S">S</i><i class="k H">H</i></div></div>
+          <p>Reabsorción y secreción casi total de los principales solutos y reabsorción del <span class="pct">70 % del agua filtrada</span><sup class="fix">†6</sup>, en condiciones de isotonicidad. El motor es el arrastre de sodio generado por la bomba Na⁺/K⁺ de la membrana basolateral.</p>
+          <div class="cols">
+            <div class="box"><span class="eyebrow">Reabsorción</span>
+              <ul>
+                <li>Cotransporte con Na⁺: glucosa, aminoácidos, fosfatos, sulfatos.</li>
+                <li>Transporte saturable con máximo tubular (Tm): bajo el umbral plasmático todo lo filtrado se reabsorbe; por encima, el exceso se excreta.</li>
+                <li>Final del TP: el Cl⁻ concentrado pasa con Na⁺ como NaCl por las uniones intercelulares.</li>
+                <li>K⁺ por conductancias específicas; siempre la misma proporción del filtrado.</li>
+              </ul>
+            </div>
+            <div class="box"><span class="eyebrow">Secreción</span>
+              <ul>
+                <li>Ácidos y bases orgánicas, toxinas y fármacos.</li>
+                <li>La mayor parte del excedente de productos que circulan en el plasma.</li>
+                <li>H⁺ vía antitransporte Na⁺/H⁺ (NHE3), con recuperación del bicarbonato filtrado.</li>
+                <li>Algo de K⁺ en la parte final del TP.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="hormone"><b>NHE3:</b> se inhibe con PTH y glucagón; se activa con angiotensina II, catecolaminas α y endotelina.</p>
+          <p style="font-size:.93rem;color:var(--muted)">Mecanismo del agua: la bomba Na⁺/K⁺ acumula sales en el espacio basolateral, crea un gradiente osmolar con la luz tubular y el aumento de presión de agua en ese espacio la empuja hacia el capilar.</p>
+        </article>
+      </li>
+
+      <!-- ASA DE HENLE -->
+      <li class="station" data-segmento="asa-henle">
+        <div class="rail"><span class="dot"></span><span class="seg">Asa de Henle</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Asa de Henle</h3><div class="procs"><i class="k R">R</i><i class="k H">H</i></div></div>
+          <div class="sub">
+            <div class="box"><span class="eyebrow">Rama descendente delgada</span><h4>Sale agua</h4>
+              <p>Alta permeabilidad al agua. Nula reabsorción de NaCl. Impermeable a la urea.<sup class="fix">†2</sup></p></div>
+            <div class="box"><span class="eyebrow">Rama ascendente delgada</span><h4>Sale NaCl, entra urea</h4>
+              <p>Impermeable al agua. El NaCl sale por gradiente químico; la urea entra por gradiente químico.</p></div>
+            <div class="box"><span class="eyebrow">Rama ascendente gruesa</span><h4>Segmento diluyente</h4>
+              <p>Impermeable al agua. Alta actividad de la bomba Na⁺/K⁺ basolateral. Cotransportador luminal <span class="mono">Na⁺/K⁺/2Cl⁻</span> que saca estos iones de la luz: el líquido tubular se vuelve aún más hipotónico.</p></div>
+          </div>
+          <p class="hormone"><b>ADH:</b> activa el cotransportador Na⁺/K⁺/2Cl⁻ de la rama ascendente gruesa.</p>
+        </article>
+      </li>
+
+      <!-- TCD -->
+      <li class="station" data-segmento="tubulo-distal">
+        <div class="rail"><span class="dot"></span><span class="seg">Túbulo contorneado distal</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Túbulo contorneado distal (TCD)</h3><div class="procs"><i class="k R">R</i><i class="k H">H</i></div></div>
+          <div class="cols">
+            <div class="box"><span class="eyebrow">Membrana apical</span>
+              <ul><li>Cotransportador <span class="mono">Na⁺/Cl⁻</span>.</li></ul></div>
+            <div class="box"><span class="eyebrow">Membrana basolateral</span>
+              <ul>
+                <li>Intercambiador <span class="mono">3Na⁺/Ca²⁺</span><sup class="fix">†3</sup>: saca Ca²⁺ de la célula hacia la sangre, es decir, <b>reabsorbe calcio</b>.<sup class="fix">†3</sup></li>
+                <li>Bombas Na⁺/K⁺, de calcio y de magnesio.</li>
+              </ul></div>
+          </div>
+          <p class="hormone"><b>Mácula densa:</b> detecta la concentración tubular de NaCl. Cuando el NaCl que llega <b>disminuye</b>, se libera renina; cuando aumenta, se frena la renina y se contrae la arteriola aferente (retroalimentación tubuloglomerular).<sup class="fix">†4</sup></p>
+        </article>
+      </li>
+
+      <!-- COLECTOR -->
+      <li class="station" data-segmento="colector">
+        <div class="rail"><span class="dot"></span><span class="seg">Túbulo conector y colector</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Túbulo conector y conducto colector</h3><div class="procs"><i class="k R">R</i><i class="k S">S</i><i class="k H">H</i></div></div>
+          <p>Ajuste fino: aquí los transportadores y canales están regulados hormonalmente.</p>
+          <div class="cols">
+            <div class="box"><span class="eyebrow">Región apical</span>
+              <ul>
+                <li>Canales de Na⁺ específicos, regulados por aldosterona.</li>
+                <li>Canales de K⁺ que favorecen su secreción: activados por aldosterona, inhibidos por el H⁺ luminal.</li>
+                <li>Cotransporte Cl⁻/K⁺ de poca actividad.</li>
+              </ul></div>
+            <div class="box"><span class="eyebrow">Región basolateral y tipos celulares</span>
+              <ul>
+                <li>Bombas Na⁺/K⁺ reguladas por aldosterona.</li>
+                <li>Células intercalares tipo A: H⁺-ATPasa apical (secreta H⁺) e intercambiador Cl⁻/HCO₃⁻ basolateral.<sup class="fix">†5</sup></li>
+                <li>Acuaporinas en células principales.<sup class="fix">†5</sup></li>
+              </ul></div>
+          </div>
+          <p class="hormone"><b>Aldosterona:</b> canales de Na⁺, canales de K⁺ y bomba Na⁺/K⁺.</p>
+        </article>
+      </li>
+    </ol>
+  </section>
+
+  <!-- OUTPUT -->
+  <section class="band output" aria-labelledby="h-out">
+    <div class="band-head"><span class="tag">Output</span><h2 id="h-out">Formación de orina</h2></div>
+    <div class="out-row">
+      <span class="pill">Conducto colector</span><span aria-hidden="true">→</span>
+      <span class="pill">Excreción urinaria</span>
+    </div>
+  </section>
+
+  <aside class="notes" aria-labelledby="h-notes">
+    <span class="eyebrow">Notas de revisión · verificación cruzada [1] Carracedo y Ramírez · [2] StatPearls · retirar al aprobar</span>
+    <ol>
+      <li><b>†1 Nomenclatura.</b> [1] escribe "interlobulares", igual que la traducción al español de Guyton, para las arterias que la Terminología Anatómica llama <i>interlobares</i>. Se usa el término anatómico para no confundirlas con las interlobulillares. [2] no describe la ramificación arterial.</li>
+      <li><b>†2 Se conserva [1].</b> [1] dice que la rama descendente delgada es impermeable a la urea; [2] solo indica permeabilidad limitada a solutos. En nefronas de asa larga hay permeabilidad moderada a la urea (UT-A2), parte del reciclaje de urea. Ninguna de las dos fuentes lo resuelve; valorar matizar.</li>
+      <li><b>†3 Corregido; lo confirma [2].</b> [1] dice en el apartado tubular que la reabsorción de sodio en el TCD "supone secreción de calcio", pero en su apartado de PTH dice que la PTH aumenta la reabsorción de calcio principalmente en el TCD. [2] confirma lo segundo: el calcio entra a la célula por canales apicales bajo la acción de la PTH, es decir, se reabsorbe. La salida basolateral es por NCX1, de estequiometría 3Na⁺:1Ca²⁺ ([1] escribe "2sodio/calcio"; [2] no da la estequiometría). La relación con el sodio es inversa: las tiazidas bloquean el cotransportador Na⁺/Cl⁻ y aumentan la reabsorción de calcio.</li>
+      <li><b>†4 Corregido; lo confirma [2].</b> [1] dice en el apartado tubular que la mácula densa libera renina cuando el sodio aumenta, y en sus apartados de renina y glomerular dice lo contrario. [2] es explícito: el NaCl aumentado hace que la mácula densa libere vasoconstrictores sobre la arteriola aferente, y el NaCl disminuido hace que señale a las células granulares para liberar renina.</li>
+      <li><b>†5 Corregido; [2] no lo resuelve.</b> [1] lista en intercalares A, región basolateral, intercambiadores Na⁺/H⁺ y Cl⁻/HCO₃⁻ y acuaporinas. El Cl⁻/HCO₃⁻ basolateral (AE1) es correcto. La secreción luminal de H⁺ la hacen la H⁺-ATPasa y la H⁺/K⁺-ATPasa apicales, que [1] no menciona. Las acuaporinas son de células principales, como [1] indica en su apartado de ADH. [2] solo menciona de forma general el transporte de H⁺ y la permeabilidad al agua regulada por ADH en el colector; esta corrección descansa en los libros de texto de abajo.</li>
+      <li><b>†6 Discrepancia entre fuentes, sin cambio.</b> Para el túbulo proximal [1] da 70 % del agua filtrada y [2] aproximadamente 65 % del sodio y el agua. Se conserva [1]; considerar "65–70 %".</li>
+    </ol>
+    <p style="font-size:.85rem;color:var(--muted)">Para †2, †3 (estequiometría) y †5, contrastar en Guyton y Hall, <i>Tratado de fisiología médica</i>, y Boron y Boulpaep, <i>Medical Physiology</i> (capítulos de transporte tubular y regulación ácido-base).</p>
+  </aside>
+
+  <footer style="font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px">
+    <span class="eyebrow">Referencias</span>
+    <p>1. Carracedo J, Ramírez R. Fisiología Renal. En: Lorenzo V, López Gómez JM (Eds). Nefrología al día [Internet]. ISSN: 2659-2606. 2020 [citado 2026 nov 6]. Disponible en: <a href="https://nefrologiaaldia.org/articulo/fisiologia-renal/" style="color:var(--filtrate);overflow-wrap:anywhere">https://nefrologiaaldia.org/articulo/fisiologia-renal/</a></p>
+    <p>2. Ogobuiro I, Tuma F. Physiology, Renal. [Updated 2023 Jul 24]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2023 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK538339/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK538339/</a></p>
+  </footer>
+</div>
+<div class="wrap" lang="en" id="v-en" hidden>
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <span class="eyebrow">Renal physiology · structure–function correlation</span>
+    <h1>Renal function: from the renal artery to urine</h1>
+    <p class="lede">An input → process → output model. Each station of the nephron shows which processes happen there, through which transporters and under which hormonal regulation. It is the base for locating later where the kidney fails in disease.</p>
+  </header>
+
+  <section class="band input" aria-labelledby="h-in-en">
+    <div class="band-head"><span class="tag">Input</span><h2 id="h-in-en">Blood entering the kidney</h2></div>
+    <p>Blood enters through the renal artery at the hilum and branches until it ends in the glomerular capillaries, where large amounts of fluid and solutes are filtered to begin urine formation.</p>
+    <ol class="chain">
+      <li><span class="node">Renal artery (hilum)</span></li>
+      <li><span class="node">Interlobar arteries<sup class="fix">†1</sup></span></li>
+      <li><span class="node">Arcuate arteries</span></li>
+      <li><span class="node">Interlobular arteries</span></li>
+      <li><span class="node">Afferent arteriole</span></li>
+      <li><span class="node end">Glomerular capillaries</span></li>
+    </ol>
+  </section>
+
+  <section class="band process" aria-labelledby="h-pr-en">
+    <div class="band-head"><span class="tag">Process</span><h2 id="h-pr-en">Four processes of the nephron</h2></div>
+    <ol class="steps">
+      <li><span class="n">1</span><b>Filtration</b><small>Glomerular filtrate.</small></li>
+      <li><span class="n">2</span><b>Tubular reabsorption</b><small>Organic nutrients (amino acids, trace elements) and glucose are reabsorbed.</small></li>
+      <li><span class="n">3</span><b>Tubular secretion</b><small>Toxins are secreted and not reabsorbed.</small></li>
+      <li><span class="n">4</span><b>Urinary excretion</b><small>What remains in the tubular lumen leaves as urine.</small></li>
+    </ol>
+    <div class="legend" aria-label="Process key">
+      <span><i class="k F">F</i> Filtration</span>
+      <span><i class="k R">R</i> Reabsorption</span>
+      <span><i class="k S">S</i> Secretion</span>
+      <span><i class="k H">H</i> Hormonal regulation</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-ne-en" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="eyebrow">Structure–function correlation</span>
+      <h2 id="h-ne-en">Along the nephron</h2>
+    </div>
+
+    <ol class="nephron">
+      <li class="station" data-segmento="glomerulo">
+        <div class="rail"><span class="dot"></span><span class="seg">Renal corpuscle</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Glomerular capillaries</h3><div class="procs"><i class="k F">F</i></div></div>
+          <p>Filtration of large amounts of fluid and solutes into Bowman's space: urine formation begins here. The filtrate passes on to the proximal tubule.</p>
+        </article>
+      </li>
+
+      <li class="station" data-segmento="tubulo-proximal">
+        <div class="rail"><span class="dot"></span><span class="seg">Proximal tubule</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Proximal tubule (PT)</h3><div class="procs"><i class="k R">R</i><i class="k S">S</i><i class="k H">H</i></div></div>
+          <p>Nearly complete reabsorption and secretion of the main solutes and reabsorption of <span class="pct">70% of filtered water</span><sup class="fix">†6</sup>, under isotonic conditions. The driving force is sodium movement generated by the Na⁺/K⁺ pump in the basolateral membrane.</p>
+          <div class="cols">
+            <div class="box"><span class="eyebrow">Reabsorption</span>
+              <ul>
+                <li>Cotransport with Na⁺: glucose, amino acids, phosphates, sulfates.</li>
+                <li>Saturable transport with a tubular maximum (Tm): below the plasma threshold everything filtered is reabsorbed; above it, the excess is excreted.</li>
+                <li>Late PT: concentrated Cl⁻ moves with Na⁺ as NaCl through the intercellular junctions.</li>
+                <li>K⁺ through specific conductances; always the same fraction of the filtered load.</li>
+              </ul>
+            </div>
+            <div class="box"><span class="eyebrow">Secretion</span>
+              <ul>
+                <li>Organic acids and bases, toxins and drugs.</li>
+                <li>Most of the excess products circulating in plasma.</li>
+                <li>H⁺ via the Na⁺/H⁺ antiporter (NHE3), with recovery of filtered bicarbonate.</li>
+                <li>Some K⁺ in the late PT.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="hormone"><b>NHE3:</b> inhibited by PTH and glucagon; activated by angiotensin II, α-catecholamines and endothelin.</p>
+          <p style="font-size:.93rem;color:var(--muted)">Water mechanism: the Na⁺/K⁺ pump accumulates salts in the basolateral space, creating an osmotic gradient with the tubular lumen; the rise in water pressure in that space drives it into the capillary.</p>
+        </article>
+      </li>
+
+      <li class="station" data-segmento="asa-henle">
+        <div class="rail"><span class="dot"></span><span class="seg">Loop of Henle</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Loop of Henle</h3><div class="procs"><i class="k R">R</i><i class="k H">H</i></div></div>
+          <div class="sub">
+            <div class="box"><span class="eyebrow">Thin descending limb</span><h4>Water leaves</h4>
+              <p>Highly permeable to water. No NaCl reabsorption. Impermeable to urea.<sup class="fix">†2</sup></p></div>
+            <div class="box"><span class="eyebrow">Thin ascending limb</span><h4>NaCl leaves, urea enters</h4>
+              <p>Impermeable to water. NaCl leaves down its chemical gradient; urea enters down its chemical gradient.</p></div>
+            <div class="box"><span class="eyebrow">Thick ascending limb</span><h4>Diluting segment</h4>
+              <p>Impermeable to water. High basolateral Na⁺/K⁺ pump activity. Luminal <span class="mono">Na⁺/K⁺/2Cl⁻</span> cotransporter removes these ions from the lumen, so the tubular fluid becomes even more hypotonic.</p></div>
+          </div>
+          <p class="hormone"><b>ADH:</b> activates the Na⁺/K⁺/2Cl⁻ cotransporter of the thick ascending limb.</p>
+        </article>
+      </li>
+
+      <li class="station" data-segmento="tubulo-distal">
+        <div class="rail"><span class="dot"></span><span class="seg">Distal convoluted tubule</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Distal convoluted tubule (DCT)</h3><div class="procs"><i class="k R">R</i><i class="k H">H</i></div></div>
+          <div class="cols">
+            <div class="box"><span class="eyebrow">Apical membrane</span>
+              <ul><li><span class="mono">Na⁺/Cl⁻</span> cotransporter.</li></ul></div>
+            <div class="box"><span class="eyebrow">Basolateral membrane</span>
+              <ul>
+                <li><span class="mono">3Na⁺/Ca²⁺</span> exchanger<sup class="fix">†3</sup>: moves Ca²⁺ out of the cell into blood, that is, it <b>reabsorbs calcium</b>.<sup class="fix">†3</sup></li>
+                <li>Na⁺/K⁺, calcium and magnesium pumps.</li>
+              </ul></div>
+          </div>
+          <p class="hormone"><b>Macula densa:</b> senses tubular NaCl concentration. When NaCl delivery <b>falls</b>, renin is released; when it rises, renin is suppressed and the afferent arteriole constricts (tubuloglomerular feedback).<sup class="fix">†4</sup></p>
+        </article>
+      </li>
+
+      <li class="station" data-segmento="colector">
+        <div class="rail"><span class="dot"></span><span class="seg">Connecting tubule and collecting duct</span><span class="stem"></span></div>
+        <article class="card">
+          <div class="card-head"><h3>Connecting tubule and collecting duct</h3><div class="procs"><i class="k R">R</i><i class="k S">S</i><i class="k H">H</i></div></div>
+          <p>Fine tuning: here transporters and channels are under hormonal regulation.</p>
+          <div class="cols">
+            <div class="box"><span class="eyebrow">Apical region</span>
+              <ul>
+                <li>Specific Na⁺ channels, regulated by aldosterone.</li>
+                <li>K⁺ channels that favor its secretion: activated by aldosterone, inhibited by luminal H⁺.</li>
+                <li>Low-activity Cl⁻/K⁺ cotransport.</li>
+              </ul></div>
+            <div class="box"><span class="eyebrow">Basolateral region and cell types</span>
+              <ul>
+                <li>Na⁺/K⁺ pumps regulated by aldosterone.</li>
+                <li>Type A intercalated cells: apical H⁺-ATPase (secretes H⁺) and basolateral Cl⁻/HCO₃⁻ exchanger.<sup class="fix">†5</sup></li>
+                <li>Aquaporins in principal cells.<sup class="fix">†5</sup></li>
+              </ul></div>
+          </div>
+          <p class="hormone"><b>Aldosterone:</b> Na⁺ channels, K⁺ channels and the Na⁺/K⁺ pump.</p>
+        </article>
+      </li>
+    </ol>
+  </section>
+
+  <section class="band output" aria-labelledby="h-out-en">
+    <div class="band-head"><span class="tag">Output</span><h2 id="h-out-en">Urine formation</h2></div>
+    <div class="out-row">
+      <span class="pill">Collecting duct</span><span aria-hidden="true">→</span>
+      <span class="pill">Urinary excretion</span>
+    </div>
+  </section>
+
+  <aside class="notes">
+    <span class="eyebrow">Review notes · cross-check [1] Carracedo &amp; Ramírez · [2] StatPearls · remove once approved</span>
+    <ol>
+      <li><b>†1 Nomenclature.</b> [1] writes "interlobulares", as in the Spanish translation of Guyton, for the arteries that Terminologia Anatomica calls <i>interlobar</i>. The anatomical term is used so they are not confused with the interlobular arteries. [2] does not describe the arterial branching.</li>
+      <li><b>†2 [1] kept as is.</b> [1] states the thin descending limb is impermeable to urea; [2] only states limited solute permeability. Long-loop nephrons show moderate urea permeability (UT-A2), part of urea recycling. Neither source settles it; consider qualifying.</li>
+      <li><b>†3 Corrected; confirmed by [2].</b> In its tubular section [1] says sodium reabsorption in the DCT "implies calcium secretion", but its PTH section says PTH increases calcium reabsorption mainly in the DCT. [2] confirms the latter: calcium enters the cell through apical channels under PTH, so it is reabsorbed. Basolateral exit is through NCX1, stoichiometry 3Na⁺:1Ca²⁺ ([1] writes "2 sodium/calcium"; [2] gives no stoichiometry). The link with sodium is inverse: thiazides block the Na⁺/Cl⁻ cotransporter and increase calcium reabsorption.</li>
+      <li><b>†4 Corrected; confirmed by [2].</b> In its tubular section [1] says the macula densa releases renin when sodium rises, and its renin and glomerular sections say the opposite. [2] is explicit: increased NaCl makes the macula densa release vasoconstrictors onto the afferent arteriole, and decreased NaCl makes it signal granular cells to release renin.</li>
+      <li><b>†5 Corrected; not settled by [2].</b> [1] lists Na⁺/H⁺ and Cl⁻/HCO₃⁻ exchangers and aquaporins in the basolateral region of type A intercalated cells. Basolateral Cl⁻/HCO₃⁻ (AE1) is correct. Luminal H⁺ secretion is done by apical H⁺-ATPase and H⁺/K⁺-ATPase, which [1] does not mention. Aquaporins belong to principal cells, as [1] states in its ADH section. [2] only mentions H⁺ transport and ADH-regulated water permeability in the collecting duct in general terms; this correction rests on the textbooks below.</li>
+      <li><b>†6 Discrepancy between sources, no change.</b> For the proximal tubule [1] gives 70% of filtered water and [2] about 65% of filtered sodium and water. [1] is kept; consider "65–70%".</li>
+    </ol>
+    <p style="font-size:.85rem;color:var(--muted)">For †2, †3 (stoichiometry) and †5, check Guyton and Hall, <i>Textbook of Medical Physiology</i>, and Boron and Boulpaep, <i>Medical Physiology</i> (chapters on tubular transport and acid–base regulation).</p>
+  </aside>
+
+  <footer style="font-size:.88rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px">
+    <span class="eyebrow">References</span>
+    <p>1. Carracedo J, Ramírez R. Fisiología Renal. En: Lorenzo V, López Gómez JM (Eds). Nefrología al día [Internet]. ISSN: 2659-2606. 2020 [cited 2026 Nov 6]. Available from: <a href="https://nefrologiaaldia.org/articulo/fisiologia-renal/" style="color:var(--filtrate);overflow-wrap:anywhere">https://nefrologiaaldia.org/articulo/fisiologia-renal/</a></p>
+    <p>2. Ogobuiro I, Tuma F. Physiology, Renal. [Updated 2023 Jul 24]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2023 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK538339/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK538339/</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  function show(){
+    var en = location.hash === '#en';
+    document.getElementById('v-en').hidden = !en;
+    document.getElementById('v-es').hidden = en;
+    document.documentElement.lang = en ? 'en' : 'es';
+    document.getElementById('l-en').setAttribute('aria-current', en);
+    document.getElementById('l-es').setAttribute('aria-current', !en);
+    document.title = en ? 'Renal Function Flow' : 'Función Renal Anatomofuncional';
+  }
+  window.addEventListener('hashchange', show); show();
+})();
+</script>
+</body>
+</html>
