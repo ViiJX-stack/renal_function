@@ -9,7 +9,7 @@ authors:
     affiliation: "Unidad de Medicina Familiar No. 51, IMSS; Escuela de Medicina, UNITEC campus León"
 date-released: 2026-11-06
 version: "1.0.0"
-repository-code: "https://github.com/ViiJX-stack/fisiologia-renal"
+repository-code: "https://github.com/ViiJX-stack/renal_function"
 references:
   - type: book-section
     title: "Fisiología Renal"

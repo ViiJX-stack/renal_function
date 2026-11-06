@@ -8,7 +8,7 @@ Diagrama de flujo para estudiantes de medicina: entrada vascular, los cuatro pro
 
 Es la base para correlacionar después con patología (lesión renal aguda y tubulopatías). Cada segmento lleva un identificador (`data-segmento`) para añadir esas capas.
 
-**Ver en línea:** https://viijx-stack.github.io/fisiologia-renal/ (después de activar GitHub Pages). La página tiene selector ES/EN; la versión en inglés está en `#en`.
+**Ver en línea:** https://viijx-stack.github.io/renal_function/ (después de activar GitHub Pages). La página tiene selector ES/EN; la versión en inglés está en `#en`.
 
 ## Contenido
 - `index.html`: el diagrama en español e inglés. Se abre en cualquier navegador, sin instalar nada.
@@ -32,6 +32,6 @@ A flow diagram for medical students: vascular input, the four nephron processes 
 
 It is the base for correlating later with disease (acute kidney injury and tubulopathies). Each segment carries an identifier (`data-segmento`) for adding those layers.
 
-**View online:** https://viijx-stack.github.io/fisiologia-renal/#en (once GitHub Pages is enabled).
+**View online:** https://viijx-stack.github.io/renal_function/#en (once GitHub Pages is enabled).
 
 References, author and citation: see the sections above and `CITATION.cff`.
