@@ -4,7 +4,7 @@
 
 ## Español
 
-Diagrama de flujo para estudiantes de medicina: entrada vascular, los cuatro procesos de la nefrona (filtración, reabsorción, secreción y excreción), el recorrido segmento por segmento con sus transportadores y su regulación hormonal, y la formación de orina. Incluye además las funciones del riñón (hídrica, ácido-base y endocrina), la evaluación glomerular y tubular, la medición del filtrado glomerular y el aclaramiento de creatinina.
+Diagrama de flujo para estudiantes de medicina: entrada vascular, los cuatro procesos de la nefrona (filtración, reabsorción, secreción y excreción), el recorrido segmento por segmento con sus transportadores y su regulación hormonal, y la formación de orina. Incluye además las funciones del riñón (hídrica, ácido-base y endocrina), la evaluación glomerular y tubular, la medición del filtrado glomerular, el aclaramiento de creatinina, el sistema renina-angiotensina-aldosterona y la acción de la aldosterona en la célula principal.
 
 Es la base para correlacionar después con patología (lesión renal aguda y tubulopatías). Cada segmento lleva un identificador (`data-segmento`) para añadir esas capas.
 
@@ -12,6 +12,7 @@ Es la base para correlacionar después con patología (lesión renal aguda y tub
 
 ## Contenido
 - `index.html`: el diagrama en español e inglés. Se abre en cualquier navegador, sin instalar nada.
+- `img/`: ilustraciones de la nefrona (español e inglés), creadas en BioRender.com.
 
 ## Referencias
 1. Carracedo J, Ramírez R. Fisiología Renal. En: Lorenzo V, López Gómez JM (Eds). Nefrología al día [Internet]. ISSN: 2659-2606. 2020 [citado 2026 nov 6]. Disponible en: https://nefrologiaaldia.org/articulo/fisiologia-renal/
@@ -20,6 +21,7 @@ Es la base para correlacionar después con patología (lesión renal aguda y tub
 4. Gounden V, Bhatt H, Jialal I. Renal Function Tests. [Updated 2024 Jul 27]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024 Jan-. Available from: https://www.ncbi.nlm.nih.gov/books/NBK507821/
 5. Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117–S314.
 6. Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. KDIGO 2026 Clinical Practice Guideline for the Management of Anemia in Chronic Kidney Disease (CKD). Kidney Int. 2026;109(1S):S1–S99. Available from: https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext
+7. Gardner DG, Shoback D, editores. Greenspan. Endocrinología básica y clínica. 10.ª ed. Nueva York: McGraw-Hill Education; 2018.
 
 ## Autor
 Víctor Junior Godínez-Vázquez · ORCID [0000-0003-0644-801X](https://orcid.org/0000-0003-0644-801X)
@@ -32,7 +34,7 @@ Ver `CITATION.cff` o el botón "Cite this repository" de GitHub.
 
 ## English
 
-A flow diagram for medical students: vascular input, the four nephron processes (filtration, reabsorption, secretion and excretion), a segment-by-segment walk through the nephron with its transporters and hormonal regulation, and urine formation. It also covers kidney functions (water, acid–base and endocrine), glomerular and tubular assessment, GFR measurement and creatinine clearance.
+A flow diagram for medical students: vascular input, the four nephron processes (filtration, reabsorption, secretion and excretion), a segment-by-segment walk through the nephron with its transporters and hormonal regulation, and urine formation. It also covers kidney functions (water, acid–base and endocrine), glomerular and tubular assessment, GFR measurement, creatinine clearance, the renin–angiotensin–aldosterone system and aldosterone action in the principal cell.
 
 It is the base for correlating later with disease (acute kidney injury and tubulopathies). Each segment carries an identifier (`data-segmento`) for adding those layers.
 

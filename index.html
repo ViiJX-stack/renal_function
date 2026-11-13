@@ -15,7 +15,7 @@
   --filtrate:#0f6e78;   /* filtrado / túbulo */
   --urine:#a86d00;      /* orina */
   --hormone:#4b4fa8;    /* regulación hormonal */
-  --fix:#7a5a00; --fixbg:#fff4d6;
+  --figbg:#ffffff; --ok:#2f7d4a;
   --chip:#e8eef1;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
@@ -24,11 +24,11 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#0f151b; --surface:#17202a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
   --blood:#e0605a; --filtrate:#4cc3cd; --urine:#e8b04a; --hormone:#9ea3f0;
-  --fix:#f0c860; --fixbg:#2e2714; --chip:#22303c; color-scheme:dark}}
+  --figbg:#ffffff; --ok:#5fbf7f; --chip:#22303c; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f151b; --surface:#17202a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
   --blood:#e0605a; --filtrate:#4cc3cd; --urine:#e8b04a; --hormone:#9ea3f0;
-  --fix:#f0c860; --fixbg:#2e2714; --chip:#22303c; color-scheme:dark}
+  --figbg:#ffffff; --ok:#5fbf7f; --chip:#22303c; color-scheme:dark}
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);
@@ -140,6 +140,13 @@ p{margin:0}
 .formula{font:500 1.25rem var(--mono);text-align:center;padding:10px;border-radius:8px;background:var(--surface);color:var(--filtrate);margin:4px 0}
 .mini{font-size:.9rem;color:var(--muted)}
 @media (max-width:760px){.kids,.kids.two{grid-template-columns:minmax(0,1fr)}.kids:not(.inner)>.kid::before{display:none}}
+.fig{margin:0;background:var(--figbg);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.fig img{width:100%;height:auto;display:block;border-radius:6px}
+.fig figcaption{font-size:.82rem;color:#4a5560}
+.mods{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.93rem}
+.sg{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font:700 .85rem/1 var(--mono);color:var(--surface);margin-right:6px;font-style:normal}
+.sg.up{background:var(--ok)} .sg.dn{background:var(--blood)}
+.chain.v .node.end-loop{background:var(--hormone);color:var(--surface);border-color:var(--hormone)}
 </style>
 </head>
 <body>
@@ -191,6 +198,7 @@ p{margin:0}
       <h2 id="h-ne">Recorrido por la nefrona</h2>
     </div>
 
+    <figure class="fig"><img src="img/nefrona_es.jpg" alt="Nefrona con cada segmento en un color: glomérulo, túbulo proximal, asa de Henle, túbulo contorneado distal, mácula densa y conducto colector, con flechas de filtración, reabsorción y secreción y las hormonas PTH, aldosterona y ADH." loading="lazy"><figcaption>Figura 1. Nefrona: correlación anatomofuncional. Creado en BioRender.com</figcaption></figure>
     <ol class="nephron">
       <!-- GLOMÉRULO -->
       <li class="station" data-segmento="glomerulo">
@@ -318,6 +326,82 @@ p{margin:0}
     </div>
   </section>
 
+  <!-- SISTEMA RENINA-ANGIOTENSINA-ALDOSTERONA -->
+  <section class="band fn" aria-labelledby="h-raa-es">
+    <div class="band-head"><span class="tag">SRAA</span><h2 id="h-raa-es">Sistema renina-angiotensina-aldosterona</h2></div>
+    <p class="lede">Asas de retroalimentación renina-angiotensina-aldosterona y potasio-aldosterona. La producción y secreción de aldosterona en la zona glomerulosa se determina por la entrada de cada asa.</p>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">Asa renina-angiotensina-aldosterona</span>
+        <ol class="chain v">
+          <li><span class="node">Células yuxtaglomerulares</span></li>
+          <li><span class="node">Liberación de renina</span></li>
+          <li><span class="node">Angiotensinógeno → Angiotensina I</span></li>
+          <li><span class="node">ECA → Angiotensina II y III</span></li>
+          <li><span class="node">Liberación de aldosterona</span></li>
+          <li><span class="node">Retención renal de Na⁺</span></li>
+          <li><span class="node">↑ Volumen de sangre circulante</span></li>
+          <li><span class="node">↑ Presión de perfusión renal</span></li>
+          <li><span class="node end-loop">Frena a las células yuxtaglomerulares (cierra el asa)</span></li>
+        </ol>
+      </div>
+      <div class="box"><span class="eyebrow">Asa potasio-aldosterona</span>
+        <ol class="chain v">
+          <li><span class="node">↑ K⁺ sérico</span></li>
+          <li><span class="node">Liberación de aldosterona</span></li>
+          <li><span class="node">↑ Excreción renal de K⁺</span></li>
+          <li><span class="node end-loop">↓ K⁺ sérico (cierra el asa)</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">Regulan la liberación de renina</span>
+        <ul class="mods">
+          <li><i class="sg up">+</i> ↑ Catecolaminas</li>
+          <li><i class="sg up">+</i> ↓ K⁺ sérico</li>
+          <li><i class="sg dn">−</i> ↑ K⁺ sérico</li>
+          <li><i class="sg dn">−</i> ↑ Na⁺ tubular en la mácula densa</li>
+        </ul>
+      </div>
+      <div class="box"><span class="eyebrow">Regulan la liberación de aldosterona</span>
+        <ul class="mods">
+          <li><i class="sg up">+</i> ↑ K⁺ sérico, ACTH</li>
+          <li><i class="sg dn">−</i> ↓ K⁺ sérico, dopamina, ANP, heparina</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mini">ECA: enzima convertidora de angiotensina · ACTH: corticotropina · ANP: péptido natriurético auricular · K⁺: potasio · Na⁺: sodio</p>
+  </section>
+
+  <!-- ALDOSTERONA -->
+  <section class="band fn" aria-labelledby="h-ald-es">
+    <div class="band-head"><span class="tag">Aldosterona</span><h2 id="h-ald-es">Acción de la aldosterona en la célula principal</h2></div>
+    <p class="lede">La aldosterona regula el volumen extracelular y la homeostasis del potasio uniéndose al receptor de mineralocorticoide (MR) de las células epiteliales principales del conducto colector renal cortical.</p>
+    <ol class="chain">
+      <li><span class="node">Aldosterona</span></li>
+      <li><span class="node">Receptor de mineralocorticoide (MR)</span></li>
+      <li><span class="node">Núcleo: genes blanco (GRE)</span></li>
+      <li><span class="node end">Respuesta transcripcional</span></li>
+    </ol>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">Membrana luminal</span>
+        <ol class="chain v">
+          <li><span class="node">Sgk1 fosforila a Nedd4-2 y lo inactiva</span></li>
+          <li><span class="node">Menos ubiquitinación y degradación proteasomal de ENaC</span></li>
+          <li><span class="node">Más ENaC en la membrana: entra Na⁺ desde la luz</span></li>
+        </ol>
+      </div>
+      <div class="box"><span class="eyebrow">Membrana basolateral</span>
+        <ol class="chain v">
+          <li><span class="node">Activación de la Na⁺/K⁺-ATPasa</span></li>
+          <li><span class="node">Exporta Na⁺ hacia la sangre y absorbe K⁺ hacia la célula</span></li>
+          <li><span class="node">El K⁺ sale a la luz por el canal luminal</span></li>
+        </ol>
+      </div>
+    </div>
+    <p class="hormone"><b>Resultado:</b> reabsorción de Na⁺ y H₂O, secreción de K⁺.</p>
+    <p class="hormone"><b>11β-HSD2:</b> convierte el cortisol en cortisona, que no activa al MR; así el receptor queda disponible para la aldosterona.</p>
+  </section>
+
   <!-- EVALUACIÓN -->
   <section class="band eval" aria-labelledby="h-ev-es">
     <div class="band-head"><span class="tag">Evaluación</span><h2 id="h-ev-es">¿Cómo se valora la función renal?</h2></div>
@@ -409,6 +493,7 @@ p{margin:0}
     <p>4. Gounden V, Bhatt H, Jialal I. Renal Function Tests. [Updated 2024 Jul 27]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK507821/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK507821/</a></p>
     <p>5. Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117–S314. Disponible en: <a href="https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf" style="color:var(--filtrate);overflow-wrap:anywhere">https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf</a></p>
     <p>6. Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. KDIGO 2026 Clinical Practice Guideline for the Management of Anemia in Chronic Kidney Disease (CKD). Kidney Int. 2026;109(1S):S1–S99. Disponible en: <a href="https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext</a></p>
+    <p>7. Gardner DG, Shoback D, editores. Greenspan. Endocrinología básica y clínica. 10.ª ed. Nueva York: McGraw-Hill Education; 2018.</p>
   </footer>
 </div>
 <div class="wrap" lang="en" id="v-en" hidden>
@@ -452,6 +537,7 @@ p{margin:0}
       <h2 id="h-ne-en">Along the nephron</h2>
     </div>
 
+    <figure class="fig"><img src="img/nefrona_en.jpg" alt="Nephron with each segment in its own color: glomerulus, proximal tubule, loop of Henle, distal convoluted tubule, macula densa and collecting duct, with filtration, reabsorption and secretion arrows and the hormones PTH, aldosterone and ADH." loading="lazy"><figcaption>Figure 1. Nephron: structure–function correlation. Created in BioRender.com</figcaption></figure>
     <ol class="nephron">
       <li class="station" data-segmento="glomerulo">
         <div class="rail"><span class="dot"></span><span class="seg">Renal corpuscle</span><span class="stem"></span></div>
@@ -573,6 +659,82 @@ p{margin:0}
     </div>
   </section>
 
+  <!-- RENIN-ANGIOTENSIN-ALDOSTERONE SYSTEM -->
+  <section class="band fn" aria-labelledby="h-raa-en">
+    <div class="band-head"><span class="tag">RAAS</span><h2 id="h-raa-en">Renin–angiotensin–aldosterone system</h2></div>
+    <p class="lede">Renin–angiotensin–aldosterone and potassium–aldosterone feedback loops. Aldosterone production and secretion in the zona glomerulosa is set by the input of each loop.</p>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">Renin–angiotensin–aldosterone loop</span>
+        <ol class="chain v">
+          <li><span class="node">Juxtaglomerular cells</span></li>
+          <li><span class="node">Renin release</span></li>
+          <li><span class="node">Angiotensinogen → Angiotensin I</span></li>
+          <li><span class="node">ACE → Angiotensin II and III</span></li>
+          <li><span class="node">Aldosterone release</span></li>
+          <li><span class="node">Renal Na⁺ retention</span></li>
+          <li><span class="node">↑ Circulating blood volume</span></li>
+          <li><span class="node">↑ Renal perfusion pressure</span></li>
+          <li><span class="node end-loop">Inhibits juxtaglomerular cells (closes the loop)</span></li>
+        </ol>
+      </div>
+      <div class="box"><span class="eyebrow">Potassium–aldosterone loop</span>
+        <ol class="chain v">
+          <li><span class="node">↑ Serum K⁺</span></li>
+          <li><span class="node">Aldosterone release</span></li>
+          <li><span class="node">↑ Renal K⁺ excretion</span></li>
+          <li><span class="node end-loop">↓ Serum K⁺ (closes the loop)</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">Regulate renin release</span>
+        <ul class="mods">
+          <li><i class="sg up">+</i> ↑ Catecholamines</li>
+          <li><i class="sg up">+</i> ↓ Serum K⁺</li>
+          <li><i class="sg dn">−</i> ↑ Serum K⁺</li>
+          <li><i class="sg dn">−</i> ↑ Tubular Na⁺ at the macula densa</li>
+        </ul>
+      </div>
+      <div class="box"><span class="eyebrow">Regulate aldosterone release</span>
+        <ul class="mods">
+          <li><i class="sg up">+</i> ↑ Serum K⁺, ACTH</li>
+          <li><i class="sg dn">−</i> ↓ Serum K⁺, dopamine, ANP, heparin</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mini">ACE: angiotensin-converting enzyme · ACTH: corticotropin · ANP: atrial natriuretic peptide · K⁺: potassium · Na⁺: sodium</p>
+  </section>
+
+  <!-- ALDOSTERONE -->
+  <section class="band fn" aria-labelledby="h-ald-en">
+    <div class="band-head"><span class="tag">Aldosterone</span><h2 id="h-ald-en">Aldosterone action in the principal cell</h2></div>
+    <p class="lede">Aldosterone regulates extracellular volume and potassium homeostasis by binding the mineralocorticoid receptor (MR) of the principal epithelial cells of the renal cortical collecting duct.</p>
+    <ol class="chain">
+      <li><span class="node">Aldosterone</span></li>
+      <li><span class="node">Mineralocorticoid receptor (MR)</span></li>
+      <li><span class="node">Nucleus: target genes (GRE)</span></li>
+      <li><span class="node end">Transcriptional response</span></li>
+    </ol>
+    <div class="cols">
+      <div class="box"><span class="eyebrow">Luminal membrane</span>
+        <ol class="chain v">
+          <li><span class="node">Sgk1 phosphorylates and inactivates Nedd4-2</span></li>
+          <li><span class="node">Less ubiquitination and proteasomal degradation of ENaC</span></li>
+          <li><span class="node">More ENaC in the membrane: Na⁺ enters from the lumen</span></li>
+        </ol>
+      </div>
+      <div class="box"><span class="eyebrow">Basolateral membrane</span>
+        <ol class="chain v">
+          <li><span class="node">Activation of Na⁺/K⁺-ATPase</span></li>
+          <li><span class="node">Exports Na⁺ to blood and takes K⁺ into the cell</span></li>
+          <li><span class="node">K⁺ leaves to the lumen through the luminal channel</span></li>
+        </ol>
+      </div>
+    </div>
+    <p class="hormone"><b>Result:</b> Na⁺ and H₂O reabsorption, K⁺ secretion.</p>
+    <p class="hormone"><b>11β-HSD2:</b> converts cortisol to cortisone, which does not activate the MR, so the receptor stays available to aldosterone.</p>
+  </section>
+
   <!-- ASSESSMENT -->
   <section class="band eval" aria-labelledby="h-ev-en">
     <div class="band-head"><span class="tag">Assessment</span><h2 id="h-ev-en">How is kidney function assessed?</h2></div>
@@ -664,6 +826,7 @@ p{margin:0}
     <p>4. Gounden V, Bhatt H, Jialal I. Renal Function Tests. [Updated 2024 Jul 27]. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024 Jan-. Available from: <a href="https://www.ncbi.nlm.nih.gov/books/NBK507821/" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.ncbi.nlm.nih.gov/books/NBK507821/</a></p>
     <p>5. Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024;105(4S):S117–S314. Available from: <a href="https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf" style="color:var(--filtrate);overflow-wrap:anywhere">https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf</a></p>
     <p>6. Kidney Disease: Improving Global Outcomes (KDIGO) Anemia Work Group. KDIGO 2026 Clinical Practice Guideline for the Management of Anemia in Chronic Kidney Disease (CKD). Kidney Int. 2026;109(1S):S1–S99. Available from: <a href="https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext" style="color:var(--filtrate);overflow-wrap:anywhere">https://www.kidney-international.org/article/S0085-2538(25)00495-8/fulltext</a></p>
+    <p>7. Gardner DG, Shoback D, editors. Greenspan. Endocrinología básica y clínica. 10.ª ed. New York: McGraw-Hill Education; 2018.</p>
   </footer>
 </div>
 
